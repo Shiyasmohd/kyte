@@ -20,6 +20,8 @@ export default function ListProject() {
 
                     <Input className="w-[450px]" label="Website" />
                     <Input className="w-[450px]" label="Twitter" />
+                    <Input className="w-[450px] upload-logo" type="file" />
+
                     <Button color="primary" >
                         Submit
                     </Button>
