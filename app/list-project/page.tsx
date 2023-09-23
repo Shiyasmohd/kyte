@@ -3,12 +3,13 @@ import { Button } from "@nextui-org/button";
 import { Input, Textarea } from "@nextui-org/input";
 import { Inter } from "next/font/google";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] })
 
 export default function ListProject() {
 
+    const [file, setFile] = useState<any>()
 
     return (
         <div className={`min-h-[calc(100vh-300px)] flex justify-center items-center ${inter.className}`}>
@@ -20,9 +21,9 @@ export default function ListProject() {
 
                     <Input className="w-[450px]" label="Website" />
                     <Input className="w-[450px]" label="Twitter" />
-                    <Input className="w-[450px] upload-logo" type="file" />
+                    <Input className="w-[450px] upload-logo" type="file" onChange={(e: any) => setFile(e.target.files)} />
 
-                    <Button color="primary" >
+                    <Button color="primary">
                         Submit
                     </Button>
                 </div>
