@@ -51,11 +51,12 @@ export async function addProject(
   console.log(insert.txn);
 
   // Wait for transaction finality
-  await insert.txn?.wait();
+  let res = await insert.txn?.wait();
+  console.log({ res })
 
-  // Perform a read query, requesting all rows from the table
-  const { results } = await db.prepare(`SELECT * FROM ${TABLE_NAME_PROJECT};`).all();
-  console.log(results);
+  // // Perform a read query, requesting all rows from the table
+  // const { results } = await db.prepare(`SELECT * FROM ${TABLE_NAME_PROJECT};`).all();
+  // console.log(results);
   return true;
 }
 
@@ -76,7 +77,7 @@ export async function addContribution(
   contributor: string,
   amount: number
 ) {
-  console.log({ projectId, contributor, amount});
+  console.log({ projectId, contributor, amount });
   // Insert a row into the table
   const db = new Database<Contribution>();
   let id = generateRandomNumber();

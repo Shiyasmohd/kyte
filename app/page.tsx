@@ -1,8 +1,22 @@
+"use client"
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import TestImg from "../public/hero-card-complete.jpeg"
+import { useEffect } from "react";
+import { getProjects } from "@/lib/utils";
 
 export default function Home() {
+
+
+	const handleFetchProjects = async () => {
+		let projects = await getProjects()
+		console.log({ projects })
+	}
+
+	useEffect(() => {
+		handleFetchProjects()
+	}, [])
+
 	return (
 		<div className="flex justify-center">
 			<div className="max-w-screen-xl">

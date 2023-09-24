@@ -22,6 +22,8 @@ export default function ListProject() {
 
     const handleAddProject = async () => {
         console.log({ chainId });
+
+        console.log({ name: name.current.value, desc: desc.current.value, website: website.current.value, twitter: twitter.current.value, account: account.address, file })
         await addProject(
             name.current.value,
             desc.current.value,
@@ -29,7 +31,14 @@ export default function ListProject() {
             twitter.current.value,
             account.address as string,
             file
-        )
+        ).then((res) => {
+            if (res.valueOf()) {
+                alert("Project Added Successfully")
+            }
+        }).catch((err) => {
+            console.log(err)
+            alert("Error Adding Project")
+        })
     }
 
     return (
