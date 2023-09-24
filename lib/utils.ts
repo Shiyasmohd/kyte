@@ -31,7 +31,7 @@ export async function addProject(
   owner: string,
   file: any
 ) {
-  console.log({ name, description, website, twitter, owner });
+  console.log({ name, description, website, twitter, owner, file });
   // Insert a row into the table
   const db = new Database<Project>();
   let id = generateRandomNumber();
@@ -40,6 +40,7 @@ export async function addProject(
   let fileUrl = "";
   if (file) {
     fileUrl = await storeFiles(file);
+    fileUrl = fileUrl + `/${file[0].name}`
     console.log({ fileUrl });
   }
 
@@ -47,7 +48,7 @@ export async function addProject(
     .prepare(
       `INSERT INTO ${TABLE_NAME_PROJECT} (id, name, description, website, twitter, owner, file, contributors, totalRaised) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
     )
-    .bind(id, name, description, website, twitter, owner, fileUrl, contributors,totalRaised)
+    .bind(id, name, description, website, twitter, owner, fileUrl, contributors, totalRaised)
     .run();
   console.log(insert.txn);
 
@@ -56,10 +57,10 @@ export async function addProject(
   console.log({ res })
 
   // Perform a read query, requesting all rows from the table
-//   const { results } = await db
-//     .prepare(`SELECT * FROM ${TABLE_NAME_PROJECT};`)
-//     .all();
-//   console.log(results);
+  //   const { results } = await db
+  //     .prepare(`SELECT * FROM ${TABLE_NAME_PROJECT};`)
+  //     .all();
+  //   console.log(results);
   return true;
 }
 
@@ -95,18 +96,18 @@ export async function addContribution(
   // Insert a row into the table
   const db = new Database<Contribution>();
 
-//   const { meta: insert } = await db
-//     .prepare(
-//       `INSERT INTO ${TABLE_NAME_CONTRIBUTION} (id, projectId, contributor, amount) VALUES (?, ?, ?, ?);`
-//     )
-//     .bind(id, projectId, contributor, amount)
-//     .run();
+  //   const { meta: insert } = await db
+  //     .prepare(
+  //       `INSERT INTO ${TABLE_NAME_CONTRIBUTION} (id, projectId, contributor, amount) VALUES (?, ?, ?, ?);`
+  //     )
+  //     .bind(id, projectId, contributor, amount)
+  //     .run();
   const { meta: insert } = await db
     .prepare(
       `UPDATE ${TABLE_NAME_PROJECT} SET contributors=contributors+1, totalRaised=totalRaised+${amount} WHERE id=${projectId};`
     )
     .run();
-    
+
   console.log(insert.txn);
 
   // Wait for transaction finality
