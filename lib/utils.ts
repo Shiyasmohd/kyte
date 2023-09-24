@@ -1,7 +1,7 @@
 import { Database } from "@tableland/sdk";
 import { Web3Storage, getFilesFromPath, File } from "web3.storage";
 
-const TABLE_NAME_PROJECT = "crowdfundproject_80001_7527";
+const TABLE_NAME_PROJECT = "crowdfundproject_80001_7538";
 const TABLE_NAME_CONTRIBUTION = "crowdfundcontributor_80001_7536";
 
 export type Project = {
@@ -35,7 +35,8 @@ export async function addProject(
   // Insert a row into the table
   const db = new Database<Project>();
   let id = generateRandomNumber();
-
+  const contributors: number = 0;
+  const totalRaised: number = 0;
   let fileUrl = "";
   if (file) {
     fileUrl = await storeFiles(file);
@@ -44,9 +45,9 @@ export async function addProject(
 
   const { meta: insert } = await db
     .prepare(
-      `INSERT INTO ${TABLE_NAME_PROJECT} (id, name, description, website, twitter, owner, file) VALUES (?, ?, ?, ?, ?, ?, ?);`
+      `INSERT INTO ${TABLE_NAME_PROJECT} (id, name, description, website, twitter, owner, file, contributors, totalRaised) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
     )
-    .bind(id, name, description, website, twitter, owner, fileUrl)
+    .bind(id, name, description, website, twitter, owner, fileUrl, contributors,totalRaised)
     .run();
   console.log(insert.txn);
 
@@ -54,7 +55,9 @@ export async function addProject(
   await insert.txn?.wait();
 
   // Perform a read query, requesting all rows from the table
-  const { results } = await db.prepare(`SELECT * FROM ${TABLE_NAME_PROJECT};`).all();
+  const { results } = await db
+    .prepare(`SELECT * FROM ${TABLE_NAME_PROJECT};`)
+    .all();
   console.log(results);
   return true;
 }
@@ -71,12 +74,24 @@ export async function getProjects(): Promise<Project[]> {
   return results;
 }
 
+export async function getProjectById(id: number): Promise<Project[]> {
+  const db = new Database<Project>();
+
+  // Type is inferred due to `Database` instance definition.
+  // Or, it can be identified in `prepare`.
+  const { results } = await db
+    .prepare<Project>(`SELECT * FROM ${TABLE_NAME_PROJECT} WHERE id="${id}";`)
+    .all();
+  console.log(results);
+  return results;
+}
+
 export async function addContribution(
   projectId: number,
   contributor: string,
   amount: number
 ) {
-  console.log({ projectId, contributor, amount});
+  console.log({ projectId, contributor, amount });
   // Insert a row into the table
   const db = new Database<Contribution>();
   let id = generateRandomNumber();
@@ -120,7 +135,9 @@ export async function getContributionsByProject(
   // Type is inferred due to `Database` instance definition.
   // Or, it can be identified in `prepare`.
   const { results } = await db
-    .prepare<Contribution>(`SELECT * FROM ${TABLE_NAME_CONTRIBUTION} WHERE recipient="${projectId}";`)
+    .prepare<Contribution>(
+      `SELECT * FROM ${TABLE_NAME_CONTRIBUTION} WHERE projectId="${projectId}";`
+    )
     .all();
   console.log(results);
   return results;

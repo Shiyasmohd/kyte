@@ -1,7 +1,7 @@
 "use client";
 import { Database } from "@tableland/sdk";
 
-const tableNameProject: string = "crowdfundproject_80001_7527"; // Our pre-defined health check table
+const tableNameProject: string = "crowdfundproject_80001_7538"; // Our pre-defined health check table
 const tableNameContribution: string = "crowdfundcontributor_80001_7536";
 
 interface Project {
@@ -29,7 +29,7 @@ export default function Test() {
     const db = new Database<Project>();
 
     // This is the table's `prefix`; a custom table value prefixed as part of the table's name
-    const prefix: string = "crowdfundcontributor";
+    const prefix: string = "crowdfundproject";
 
     const { meta: create } = await db
       .prepare(
@@ -70,8 +70,8 @@ export default function Test() {
         "www.twitter.com/0xHashir",
         "0x379AB0b69d7fbB5834741543245836Dd2B3E7C8A",
         "jngfjsnvjrfnenvjg34ndjvnjddjvn",
-        5,
-        150
+        0,
+        0
       )
       .run();
     console.log(insert.txn);
