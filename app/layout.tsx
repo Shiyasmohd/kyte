@@ -16,13 +16,13 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import {
-	filecoin
+	filecoin, polygonMumbai
 } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 const { chains, publicClient } = configureChains(
-	[filecoin],
+	[filecoin, polygonMumbai],
 	[
 		alchemyProvider({ apiKey: process.env.ALCHEMY_ID as string }),
 		publicProvider()
