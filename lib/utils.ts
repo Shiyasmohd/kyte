@@ -21,7 +21,7 @@ export async function addProject(
   website: string,
   twitter: string,
   owner: string,
-  file: string
+  file: any
 ) {
   console.log({ name, description, website, twitter, owner });
   // Insert a row into the table
