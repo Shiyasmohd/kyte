@@ -29,7 +29,7 @@ export async function addProject(
   website: string,
   twitter: string,
   owner: string,
-  file: string
+  file: any
 ) {
   console.log({ name, description, website, twitter, owner });
   // Insert a row into the table
@@ -52,13 +52,14 @@ export async function addProject(
   console.log(insert.txn);
 
   // Wait for transaction finality
-  await insert.txn?.wait();
+  let res = await insert.txn?.wait();
+  console.log({ res })
 
   // Perform a read query, requesting all rows from the table
-  const { results } = await db
-    .prepare(`SELECT * FROM ${TABLE_NAME_PROJECT};`)
-    .all();
-  console.log(results);
+//   const { results } = await db
+//     .prepare(`SELECT * FROM ${TABLE_NAME_PROJECT};`)
+//     .all();
+//   console.log(results);
   return true;
 }
 

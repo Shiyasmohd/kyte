@@ -28,6 +28,7 @@ import {
 } from "@/components/icons";
 
 import { Logo } from "@/components/icons";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export const Navbar = () => {
 	const searchInput = (
@@ -66,6 +67,9 @@ export const Navbar = () => {
 				className="hidden sm:flex basis-1/5 sm:basis-full"
 				justify="end"
 			>
+				<NavbarItem className="hidden md:flex">
+					<ConnectButton />
+				</NavbarItem>
 				<NavbarItem className="hidden md:flex">
 					<Link href="/list-project">
 						<Button
