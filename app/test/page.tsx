@@ -1,7 +1,7 @@
 "use client";
 import { Database } from "@tableland/sdk";
 
-const tableNameProject: string = "crowdfundproject_80001_7538"; // Our pre-defined health check table
+const tableNameProject: string = "crowdfundproject_80001_7540"; // Our pre-defined health check table
 const tableNameContribution: string = "crowdfundcontributor_80001_7536";
 
 interface Project {

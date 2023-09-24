@@ -49,9 +49,9 @@ export default function ListProject() {
                     <Input className="w-[450px]" label="Project Name" ref={name} />
                     <Textarea className="w-[450px]" label="Description" ref={desc} />
 
-                    <Input className="w-[450px]" label="Website" ref={desc} />
-                    <Input className="w-[450px]" label="Twitter" ref={website} />
-                    <Input className="w-[450px] upload-logo" ref={twitter} type="file" onChange={(e: any) => setFile(e.target.files)} />
+                    <Input className="w-[450px]" label="Website" ref={website} />
+                    <Input className="w-[450px]" label="Twitter" ref={twitter} />
+                    <Input className="w-[450px] upload-logo" ref={file} type="file" onChange={(e: any) => setFile(e.target.files)} />
 
                     <Button color="primary" onClick={handleAddProject}>
                         Submit
