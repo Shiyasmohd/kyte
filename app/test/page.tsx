@@ -11,7 +11,7 @@ interface Project {
   website: string;
   twitter: string;
   owner: string;
-  file:string;
+  file: string;
   contributors: number;
   totalRaised: number;
 }
@@ -80,64 +80,63 @@ export default function Test() {
     await insert.txn?.wait();
 
     // Perform a read query, requesting all rows from the table
-    const { results } = await db.prepare(`SELECT * FROM ${tableNameProject};`).all();
+    const { results } = await db
+      .prepare(`SELECT * FROM ${tableNameProject};`)
+      .all();
     console.log(results);
   };
 
-   const createContribution = async () => {
-     // Default to grabbing a wallet connection in a browser
-     const db = new Database<Contribution>();
+  const createContribution = async () => {
+    // Default to grabbing a wallet connection in a browser
+    const db = new Database<Contribution>();
 
-     // This is the table's `prefix`; a custom table value prefixed as part of the table's name
-     const prefix: string = "crowdfundcontributor";
+    // This is the table's `prefix`; a custom table value prefixed as part of the table's name
+    const prefix: string = "crowdfundcontributor";
 
-     const { meta: create } = await db
-       .prepare(
-         `CREATE TABLE ${prefix} (id integer primary key, projectId integer, contributor text, amount integer);`
-       )
-       .run();
+    const { meta: create } = await db
+      .prepare(
+        `CREATE TABLE ${prefix} (id integer primary key, projectId integer, contributor text, amount integer);`
+      )
+      .run();
 
-     // The table's `name` is in the format `{prefix}_{chainId}_{tableId}`
-     console.log(create.txn?.name); // e.g., my_sdk_table_80001_311
-   };
+    // The table's `name` is in the format `{prefix}_{chainId}_{tableId}`
+    console.log(create.txn?.name); // e.g., my_sdk_table_80001_311
+  };
 
-   const readContribution = async () => {
-     const db = new Database<Contribution>();
+  const readContribution = async () => {
+    const db = new Database<Contribution>();
 
-     // Type is inferred due to `Database` instance definition.
-     // Or, it can be identified in `prepare`.
-     // const { results } = await db.prepare<Mail>(`SELECT * FROM ${tableName};`).all();
-     const { results } = await db
-       .prepare<Project>(`SELECT * FROM ${tableNameContribution};`)
-       .all();
+    // Type is inferred due to `Database` instance definition.
+    // Or, it can be identified in `prepare`.
+    // const { results } = await db.prepare<Mail>(`SELECT * FROM ${tableName};`).all();
+    const { results } = await db
+      .prepare<Project>(`SELECT * FROM ${tableNameContribution};`)
+      .all();
 
-     console.log(results);
-   };
+    console.log(results);
+  };
 
-   const writeContribution = async () => {
-     // Insert a row into the table
-     const db = new Database<Contribution>();
+  const writeContribution = async () => {
+    // Insert a row into the table
+    const db = new Database<Project>();
+const raised:number = 1000;
+const projectId:number = 52213973;;
+    const { meta: insert } = await db
+      .prepare(
+        `UPDATE ${tableNameProject} SET contributors=contributors+1, totalRaised=totalRaised+${raised} WHERE id=${projectId};`
+      )
+      .run();
+    console.log(insert.txn);
 
-     const { meta: insert } = await db
-       .prepare(
-         `INSERT INTO ${tableNameContribution} (id, projectId, contributor, amount) VALUES (?, ?, ?, ?);`
-       )
-       .bind(
-        1211212,
-         74484218,
-         "0x379AB0b69d7fbB5834741543245836Dd2B3E7C8A",
-         150
-       )
-       .run();
-     console.log(insert.txn);
+    // Wait for transaction finality
+    await insert.txn?.wait();
 
-     // Wait for transaction finality
-     await insert.txn?.wait();
-
-     // Perform a read query, requesting all rows from the table
-     const { results } = await db.prepare(`SELECT * FROM ${tableNameContribution};`).all();
-     console.log(results);
-   };
+    // Perform a read query, requesting all rows from the table
+    const { results } = await db
+      .prepare(`SELECT * FROM ${tableNameProject};`)
+      .all();
+    console.log(results);
+  };
 
   return (
     <div>

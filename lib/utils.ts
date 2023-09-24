@@ -81,7 +81,7 @@ export async function getProjectById(id: number): Promise<Project[]> {
   // Type is inferred due to `Database` instance definition.
   // Or, it can be identified in `prepare`.
   const { results } = await db
-    .prepare<Project>(`SELECT * FROM ${TABLE_NAME_PROJECT} WHERE id="${id}";`)
+    .prepare<Project>(`SELECT * FROM ${TABLE_NAME_PROJECT} WHERE id=${id};`)
     .all();
   console.log(results);
   return results;
@@ -89,20 +89,24 @@ export async function getProjectById(id: number): Promise<Project[]> {
 
 export async function addContribution(
   projectId: number,
-  contributor: string,
   amount: number
 ) {
-  console.log({ projectId, contributor, amount });
+  console.log({ projectId, amount });
   // Insert a row into the table
   const db = new Database<Contribution>();
-  let id = generateRandomNumber();
 
+//   const { meta: insert } = await db
+//     .prepare(
+//       `INSERT INTO ${TABLE_NAME_CONTRIBUTION} (id, projectId, contributor, amount) VALUES (?, ?, ?, ?);`
+//     )
+//     .bind(id, projectId, contributor, amount)
+//     .run();
   const { meta: insert } = await db
     .prepare(
-      `INSERT INTO ${TABLE_NAME_CONTRIBUTION} (id, projectId, contributor, amount) VALUES (?, ?, ?, ?);`
+      `UPDATE ${TABLE_NAME_PROJECT} SET contributors=contributors+1, totalRaised=totalRaised+${amount} WHERE id=${projectId};`
     )
-    .bind(id, projectId, contributor, amount)
     .run();
+    
   console.log(insert.txn);
 
   // Wait for transaction finality
@@ -137,7 +141,7 @@ export async function getContributionsByProject(
   // Or, it can be identified in `prepare`.
   const { results } = await db
     .prepare<Contribution>(
-      `SELECT * FROM ${TABLE_NAME_CONTRIBUTION} WHERE projectId="${projectId}";`
+      `SELECT * FROM ${TABLE_NAME_CONTRIBUTION} WHERE projectId=${projectId};`
     )
     .all();
   console.log(results);
