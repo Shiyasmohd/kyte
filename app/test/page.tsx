@@ -1,7 +1,7 @@
 "use client";
 import { Database } from "@tableland/sdk";
 
-const tableNameProject: string = "crowdfundproject_80001_7543"; // Our pre-defined health check table
+const tableNameProject: string = "crowdfundproject_80001_7544"; // Our pre-defined health check table
 const tableNameContribution: string = "crowdfundcontributor_80001_7536";
 
 interface Project {
@@ -11,6 +11,7 @@ interface Project {
   website: string;
   twitter: string;
   owner: string;
+  meetingUrl:string;
   file: string;
   contributors: number;
   totalRaised: number;
@@ -33,7 +34,7 @@ export default function Test() {
 
     const { meta: create } = await db
       .prepare(
-        `CREATE TABLE ${prefix} (id integer primary key, name text, description text, website text, twitter text, owner text, file text, contributors integer, totalRaised integer);`
+        `CREATE TABLE ${prefix} (id integer primary key, name text, description text, website text, twitter text, owner text, meetingUrl text, file text, contributors integer, totalRaised integer);`
       )
       .run();
 
@@ -60,7 +61,7 @@ export default function Test() {
 
     const { meta: insert } = await db
       .prepare(
-        `INSERT INTO ${tableNameProject} (id, name, description, website, twitter, owner, file, contributors, totalRaised) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
+        `INSERT INTO ${tableNameProject} (id, name, description, website, twitter, owner, meetingUrl, file, contributors, totalRaised) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
       )
       .bind(
         74484218,
@@ -69,6 +70,7 @@ export default function Test() {
         "www.metainc.in",
         "www.twitter.com/0xHashir",
         "0x379AB0b69d7fbB5834741543245836Dd2B3E7C8A",
+        "https://app.huddle01.com/ztr-maov-gfv",
         "jngfjsnvjrfnenvjg34ndjvnjddjvn",
         0,
         0

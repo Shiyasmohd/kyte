@@ -1,7 +1,7 @@
 import { Database } from "@tableland/sdk";
 import { Web3Storage, getFilesFromPath, File } from "web3.storage";
 
-const TABLE_NAME_PROJECT = "crowdfundproject_80001_7543";
+const TABLE_NAME_PROJECT = "crowdfundproject_80001_7544";
 const TABLE_NAME_CONTRIBUTION = "crowdfundcontributor_80001_7536";
 
 export type Project = {
@@ -11,6 +11,7 @@ export type Project = {
   website: string;
   twitter: string;
   owner: string;
+  meetingUrl:string,
   file: string;
   contributors: number;
   totalRaised: number;
@@ -29,6 +30,7 @@ export async function addProject(
   website: string,
   twitter: string,
   owner: string,
+  meetingUrl:string,
   file: any
 ) {
   console.log({ name, description, website, twitter, owner, file });
@@ -46,9 +48,9 @@ export async function addProject(
 
   const { meta: insert } = await db
     .prepare(
-      `INSERT INTO ${TABLE_NAME_PROJECT} (id, name, description, website, twitter, owner, file, contributors, totalRaised) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
+      `INSERT INTO ${TABLE_NAME_PROJECT} (id, name, description, website, twitter, owner, meetingUrl, file, contributors, totalRaised) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
     )
-    .bind(id, name, description, website, twitter, owner, fileUrl, contributors, totalRaised)
+    .bind(id, name, description, website, twitter, owner, meetingUrl, fileUrl, contributors, totalRaised)
     .run();
   console.log(insert.txn);
 
