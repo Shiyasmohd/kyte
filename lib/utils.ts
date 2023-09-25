@@ -1,7 +1,7 @@
 import { Database } from "@tableland/sdk";
 import { Web3Storage, getFilesFromPath, File } from "web3.storage";
 
-const TABLE_NAME_PROJECT = "crowdfundproject_80001_7540";
+const TABLE_NAME_PROJECT = "crowdfundproject_80001_7543";
 const TABLE_NAME_CONTRIBUTION = "crowdfundcontributor_80001_7536";
 
 export type Project = {
