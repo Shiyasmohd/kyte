@@ -76,7 +76,7 @@ export default function ProjectPage() {
                         <p className="my-4 text-xl">
                             Total Contributors: ${project.contributors}
                         </p>
-                        <Input className="w-full my-4" placeholder="Amount" onChange={(e) => setAmount(e.target.value)} />
+                        <Input className="w-full my-4" placeholder="Amount in MATIC" onChange={(e) => setAmount(e.target.value)} />
                         <Button onClick={handleContribute} className="w-full">
                             Send
                         </Button>
