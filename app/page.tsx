@@ -8,6 +8,7 @@ import { Button } from "@nextui-org/button";
 import { ethers, utils } from "ethers"
 import { useAccount, usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
 import { ABI, CONTRACT_ADDRESS } from "@/lib/const";
+import Link from "next/link";
 
 export default function Home() {
 
@@ -23,24 +24,7 @@ export default function Home() {
 	const amount = "0.1"
 	const projectId = 1
 
-	const handleContribute = async () => {
 
-		//@ts-ignore
-		const PROVIDER = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider)
-		const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, PROVIDER)
-		//@ts-ignore
-		await window.ethereum.request({ method: 'eth_requestAccounts' });
-		const signer = PROVIDER.getSigner();
-		await contract.connect(signer).sendETH(owner, { value: utils.parseEther(amount) })
-			.then(async (res: any) => {
-				await res.wait()
-				await addContribution(1, Number(amount))
-			})
-			.catch((err: any) => {
-				console.log(err)
-
-			})
-	}
 
 	useEffect(() => {
 		handleFetchProjects()
@@ -53,28 +37,28 @@ export default function Home() {
 				<div className="grid grid-cols-4 gap-4">
 					{
 						projects.map((item, index) => (
-							<Card className="py-4">
-								<CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-									<h4 className="font-bold flex w-full justify-between text-large">
-										{item.name}
-										<span>
-											${item.totalRaised}
-										</span>
-									</h4>
-								</CardHeader>
-								<CardBody className="overflow-visible py-2">
-									<Image
-										alt="Card background"
-										className="object-cover rounded-xl"
-										src={item.file}
-										width={270}
-										height={300}
-									/>
-									<Button onClick={handleContribute} className="mt-4">
-										Send
-									</Button>
-								</CardBody>
-							</Card>
+							<Link href={`/${item.id}`} key={index}>
+								<Card className="py-4">
+									<CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+										<h4 className="font-bold flex w-full justify-between text-large">
+											{item.name}
+											<span>
+												${item.totalRaised}
+											</span>
+										</h4>
+									</CardHeader>
+									<CardBody className="overflow-visible py-2">
+										<Image
+											alt="Card background"
+											className="object-cover rounded-xl"
+											src={item.file}
+											width={270}
+											height={300}
+										/>
+
+									</CardBody>
+								</Card>
+							</Link>
 						))
 					}
 				</div>
