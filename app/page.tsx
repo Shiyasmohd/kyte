@@ -4,16 +4,41 @@ import Image from "next/image";
 import TestImg from "../public/hero-card-complete.jpeg"
 import { useEffect, useState } from "react";
 import { Project, getProjects } from "@/lib/utils";
+import { Button } from "@nextui-org/button";
+import { ethers, utils } from "ethers"
+import { useAccount, usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
+import { ABI, CONTRACT_ADDRESS } from "@/lib/const";
 
 export default function Home() {
 
 	const [projects, setProjects] = useState<Project[]>([] as Project[])
-
+	const wallet = useAccount()
 
 	const handleFetchProjects = async () => {
 		let projects = await getProjects()
 		console.log({ projects })
 		setProjects(projects)
+	}
+	const owner = "0xB90581917BCFeb7A0e8511c8Cb7bC137F7541fb7"
+	const amount = "0.1"
+
+	const handleContribute = async () => {
+
+		//@ts-ignore
+		const PROVIDER = new ethers.providers.Web3Provider(window.ethereum as ethers.providers.ExternalProvider)
+		const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, PROVIDER)
+		//@ts-ignore
+		await window.ethereum.request({ method: 'eth_requestAccounts' });
+		const signer = PROVIDER.getSigner();
+		await contract.connect(signer).sendETH(owner, { value: utils.parseEther(amount) })
+			.then(async (res: any) => {
+				await res.wait()
+
+			})
+			.catch((err: any) => {
+				console.log(err)
+
+			})
 	}
 
 	useEffect(() => {
@@ -29,8 +54,6 @@ export default function Home() {
 						projects.map((item, index) => (
 							<Card className="py-4">
 								<CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-									<p className="text-tiny uppercase font-bold">Daily Mix</p>
-									<small className="text-default-500">12 Tracks</small>
 									<h4 className="font-bold flex w-full justify-between text-large">
 										{item.name}
 										<span>
@@ -46,6 +69,9 @@ export default function Home() {
 										width={270}
 										height={300}
 									/>
+									<Button onClick={handleContribute} className="mt-4">
+										Send
+									</Button>
 								</CardBody>
 							</Card>
 						))
