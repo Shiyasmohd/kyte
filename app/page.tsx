@@ -3,7 +3,7 @@ import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import Image from "next/image";
 import TestImg from "../public/hero-card-complete.jpeg"
 import { useEffect, useState } from "react";
-import { Project, getProjects } from "@/lib/utils";
+import { Project, addContribution, getProjects } from "@/lib/utils";
 import { Button } from "@nextui-org/button";
 import { ethers, utils } from "ethers"
 import { useAccount, usePrepareSendTransaction, useSendTransaction, useWaitForTransaction } from "wagmi";
@@ -21,6 +21,7 @@ export default function Home() {
 	}
 	const owner = "0xB90581917BCFeb7A0e8511c8Cb7bC137F7541fb7"
 	const amount = "0.1"
+	const projectId = 1
 
 	const handleContribute = async () => {
 
@@ -33,7 +34,7 @@ export default function Home() {
 		await contract.connect(signer).sendETH(owner, { value: utils.parseEther(amount) })
 			.then(async (res: any) => {
 				await res.wait()
-
+				await addContribution(1, Number(amount))
 			})
 			.catch((err: any) => {
 				console.log(err)
