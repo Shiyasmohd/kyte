@@ -63,10 +63,10 @@ export default function ProjectPage() {
                             {project.description}
                         </p>
                         <div className="flex gap-4">
-                            <Link href={project.twitter ?? ""}>
+                            <Link href={"//"+project.twitter ?? ""}>
                                 <Image src={Twitter} alt="Twitter" width={25} height={25} />
                             </Link>
-                            <Link href={project.website ?? ""}>
+                            <Link href={"//"+project.website ?? ""}>
                                 <Image src={Website} alt="Twitter" width={25} height={25} />
                             </Link>
                         </div>
