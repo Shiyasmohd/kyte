@@ -29,7 +29,7 @@ export default function ProjectPage() {
         await contract.connect(signer).sendETH(project.owner, { value: utils.parseEther(amount) })
             .then(async (res: any) => {
                 await res.wait()
-                await addContribution(1, Number(amount))
+                await addContribution(project.id, Number(amount))
             })
             .catch((err: any) => {
                 console.log(err)
