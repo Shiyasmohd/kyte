@@ -43,7 +43,7 @@ export default function Home() {
 										<h4 className="font-bold flex w-full justify-between text-large">
 											{item.name}
 											<span>
-												${item.totalRaised}
+												$MATIC {item.totalRaised / 1e18}
 											</span>
 										</h4>
 									</CardHeader>

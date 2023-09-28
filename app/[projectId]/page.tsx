@@ -29,7 +29,7 @@ export default function ProjectPage() {
         await contract.connect(signer).sendETH(project.owner, { value: utils.parseEther(amount) })
             .then(async (res: any) => {
                 await res.wait()
-                await addContribution(project.id, Number(amount))
+                await addContribution(project.id, Number(amount) * 1e18)
             })
             .catch((err: any) => {
                 console.log(err)
@@ -71,10 +71,10 @@ export default function ProjectPage() {
                             </Link>
                         </div>
                         <p className="my-4 text-xl">
-                            Total Contributions: ${project.totalRaised}
+                            Total Contributions: $MATIC {project.totalRaised / 1e18}
                         </p>
                         <p className="my-4 text-xl">
-                            Total Contributors: ${project.contributors}
+                            Total Contributors: {project.contributors}
                         </p>
                         <Link href={project.meetingUrl}>
                             <Button className="w-full my-2">
